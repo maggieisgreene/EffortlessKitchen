@@ -8,8 +8,8 @@ namespace EffortlessKitchen.Models
 {
     public class Order
     {
-        [Required]
-        public int Id { get; set; }
+        [Key]
+        public int OrderId { get; set; }
 
         [Required]
         public DateTime DateTime { get; set; }
@@ -17,13 +17,21 @@ namespace EffortlessKitchen.Models
         [Required]
         public int GuestCount { get; set; }
 
+        [Required]
         public DateTime DateCreated { get; set; }
+
+        [Required]
         public DateTime DateCompleted { get; set; }
 
+        [Required]
         public string ApplicationUserId { get; set; }
+
+        [Required]
         public ApplicationUser AppicationUser { get; set; }
 
-        public string ChefMenuId { get; set; }
+        [Required]
+        public int ChefMenuId { get; set; }
+        [Required]
         public ChefMenu ChefMenu { get; set; }
     }
 }
