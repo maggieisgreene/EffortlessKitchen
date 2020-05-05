@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EffortlessKitchen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200504194649_Initial")]
+    [Migration("20200505153840_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,6 +99,28 @@ namespace EffortlessKitchen.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "00000000-ffff-ffff-ffff-ffffffffffff",
+                            AccessFailedCount = 0,
+                            Address = "123 Infinity Way",
+                            Admmin = false,
+                            ConcurrencyStamp = "1ba897e3-79e8-4d6d-b974-aa0ce84ebb27",
+                            Email = "admin@admin.com",
+                            EmailConfirmed = true,
+                            FirstName = "admin",
+                            LastName = "admin",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@ADMIN.COM",
+                            NormalizedUserName = "ADMIN@ADMIN.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGOHqFFok7nebKDSn0XfVU4b5Dluj6vaLtKra/ZkCIZ9vX8eNi6LbohJMaKMQe5Srw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@admin.com"
+                        });
                 });
 
             modelBuilder.Entity("EffortlessKitchen.Models.Chef", b =>
@@ -130,6 +152,26 @@ namespace EffortlessKitchen.Migrations
                     b.HasKey("ChefId");
 
                     b.ToTable("Chef");
+
+                    b.HasData(
+                        new
+                        {
+                            ChefId = 1,
+                            Description = "While Gordon Rasmey is very much a household name in numerous parts of the world, what if he could be in your household? Cooking you a fresh, delicious meal!",
+                            FirstName = "Gordon",
+                            LastName = "Ramsey",
+                            Price = 200.0,
+                            Specialties = "Anything and everything!"
+                        },
+                        new
+                        {
+                            ChefId = 2,
+                            Description = "This fun, exciteful human is not only an extraordinary person, but an even better chef! Have a good laugh while being guarenteed a great meal with Rachel!",
+                            FirstName = "Rachel",
+                            LastName = "Ray",
+                            Price = 200.0,
+                            Specialties = "Baking anything to satisfy a sweet tooth!"
+                        });
                 });
 
             modelBuilder.Entity("EffortlessKitchen.Models.ChefMenu", b =>
@@ -152,6 +194,26 @@ namespace EffortlessKitchen.Migrations
                     b.HasIndex("MenuOptionId");
 
                     b.ToTable("ChefMenu");
+
+                    b.HasData(
+                        new
+                        {
+                            ChefMenuId = 1,
+                            ChefId = 1,
+                            MenuOptionId = 1
+                        },
+                        new
+                        {
+                            ChefMenuId = 2,
+                            ChefId = 2,
+                            MenuOptionId = 2
+                        },
+                        new
+                        {
+                            ChefMenuId = 3,
+                            ChefId = 1,
+                            MenuOptionId = 2
+                        });
                 });
 
             modelBuilder.Entity("EffortlessKitchen.Models.MenuOption", b =>
@@ -179,6 +241,24 @@ namespace EffortlessKitchen.Migrations
                     b.HasKey("MenuOptionId");
 
                     b.ToTable("MenuOption");
+
+                    b.HasData(
+                        new
+                        {
+                            MenuOptionId = 1,
+                            Description = "An infinitely timeless and delicious meal: they don't become a staple without being great!",
+                            Ingredients = "Spaghetti noodles, ground beef, tomatoes, and spices",
+                            Name = "Spaghetti Bolognese",
+                            Price = 25.0
+                        },
+                        new
+                        {
+                            MenuOptionId = 2,
+                            Description = "This version of enchiladas will knock your socks off! Definitely will want to hold onto your margarita a little tighter while this dish is being served.Spicy Chicken Enchiladas are served with fresh salsa and gaucamole, tortilla chips, black beans, and cilantro lime rice!",
+                            Ingredients = "Flour, Chicken, Avocados, Shredded Cheese, Tomatoes, Peppers, Black Beans, White Rice, and spices",
+                            Name = "Spicy Chicken Enchiladas",
+                            Price = 28.0
+                        });
                 });
 
             modelBuilder.Entity("EffortlessKitchen.Models.Order", b =>
@@ -214,6 +294,18 @@ namespace EffortlessKitchen.Migrations
                     b.HasIndex("ChefMenuId");
 
                     b.ToTable("Order");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderId = 1,
+                            ApplicationUserId = "00000000-ffff-ffff-ffff-ffffffffffff",
+                            ChefMenuId = 1,
+                            DateCompleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(1986),
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(2010),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(1999),
+                            GuestCount = 2
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

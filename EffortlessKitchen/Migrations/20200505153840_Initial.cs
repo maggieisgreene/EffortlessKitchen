@@ -245,6 +245,49 @@ namespace EffortlessKitchen.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Address", "Admmin", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "123 Infinity Way", false, "1ba897e3-79e8-4d6d-b974-aa0ce84ebb27", "admin@admin.com", true, "admin", "admin", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEGOHqFFok7nebKDSn0XfVU4b5Dluj6vaLtKra/ZkCIZ9vX8eNi6LbohJMaKMQe5Srw==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", false, "admin@admin.com" });
+
+            migrationBuilder.InsertData(
+                table: "Chef",
+                columns: new[] { "ChefId", "Description", "FirstName", "LastName", "Price", "Specialties" },
+                values: new object[,]
+                {
+                    { 1, "While Gordon Rasmey is very much a household name in numerous parts of the world, what if he could be in your household? Cooking you a fresh, delicious meal!", "Gordon", "Ramsey", 200.0, "Anything and everything!" },
+                    { 2, "This fun, exciteful human is not only an extraordinary person, but an even better chef! Have a good laugh while being guarenteed a great meal with Rachel!", "Rachel", "Ray", 200.0, "Baking anything to satisfy a sweet tooth!" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MenuOption",
+                columns: new[] { "MenuOptionId", "Description", "Ingredients", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, "An infinitely timeless and delicious meal: they don't become a staple without being great!", "Spaghetti noodles, ground beef, tomatoes, and spices", "Spaghetti Bolognese", 25.0 },
+                    { 2, "This version of enchiladas will knock your socks off! Definitely will want to hold onto your margarita a little tighter while this dish is being served.Spicy Chicken Enchiladas are served with fresh salsa and gaucamole, tortilla chips, black beans, and cilantro lime rice!", "Flour, Chicken, Avocados, Shredded Cheese, Tomatoes, Peppers, Black Beans, White Rice, and spices", "Spicy Chicken Enchiladas", 28.0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ChefMenu",
+                columns: new[] { "ChefMenuId", "ChefId", "MenuOptionId" },
+                values: new object[] { 1, 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "ChefMenu",
+                columns: new[] { "ChefMenuId", "ChefId", "MenuOptionId" },
+                values: new object[] { 2, 2, 2 });
+
+            migrationBuilder.InsertData(
+                table: "ChefMenu",
+                columns: new[] { "ChefMenuId", "ChefId", "MenuOptionId" },
+                values: new object[] { 3, 1, 2 });
+
+            migrationBuilder.InsertData(
+                table: "Order",
+                columns: new[] { "OrderId", "ApplicationUserId", "ChefMenuId", "DateCompleted", "DateCreated", "DateTime", "GuestCount" },
+                values: new object[] { 1, "00000000-ffff-ffff-ffff-ffffffffffff", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(1986), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(2010), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(1999), 2 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",

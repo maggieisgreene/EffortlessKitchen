@@ -20,7 +20,6 @@ namespace EffortlessKitchen.Models
         [Required]
         public DateTime DateCreated { get; set; }
 
-        [Required]
         public DateTime DateCompleted { get; set; }
 
         [Required]
