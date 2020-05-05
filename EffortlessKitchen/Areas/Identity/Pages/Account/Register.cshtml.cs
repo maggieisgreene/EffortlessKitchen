@@ -59,6 +59,12 @@ namespace EffortlessKitchen.Areas.Identity.Pages.Account
             public string Address { get; set; }
 
             [Required]
+            public bool Admmin { get; set; }
+
+            [DataType(DataType.Password)]
+            public string AdminKey { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -83,11 +89,16 @@ namespace EffortlessKitchen.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            if (Input.AdminKey == "XYZ99")
+            {
+                Input.Admmin = true;
+            }
+
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, Address = Input.Address, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, Address = Input.Address, Email = Input.Email, Admmin = Input.Admmin };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
