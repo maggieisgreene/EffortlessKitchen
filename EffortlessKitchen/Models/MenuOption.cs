@@ -8,12 +8,19 @@ namespace EffortlessKitchen.Models
 {
     public class MenuOption
     {
-        [Required]
-        public int Id { get; set; }
+        [Key]
+        public int MenuOptionId { get; set; }
 
+        [Required]
         public string Name { get; set; }
+
+        [Required]
         public string Description { get; set; }
+
+        [Required]
         public string Ingredients { get; set; }
+
+        [Required]
         public double Price { get; set; }
 
         public virtual List<ChefMenu> ChefMenus { get; set; }

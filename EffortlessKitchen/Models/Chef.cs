@@ -8,13 +8,22 @@ namespace EffortlessKitchen.Models
 {
     public class Chef
     {
-        [Required]
-        public int Id { get; set; }
+        [Key]
+        public int ChefId { get; set; }
 
+        [Required]
         public string FirstName { get; set; }
+
+        [Required]
         public string LastName { get; set; }
+
+        [Required]
         public string Description { get; set; }
+
+        [Required]
         public string Specialties { get; set; }
+
+        [Required]
         public double Price { get; set; }
 
         public virtual List<ChefMenu> ChefMenus { get; set; }
