@@ -26,13 +26,11 @@ namespace EffortlessKitchen.Controllers
             _userManager = userManager;
         }
 
-        // GET: Chef
         public async Task<ActionResult> Index()
         {
             return View(await _context.Chef.ToListAsync());
         }
 
-        // GET: Chef/Details/5
         public async Task<ActionResult> Details(int id)
         {
             var chef = await _context.Chef
@@ -42,27 +40,22 @@ namespace EffortlessKitchen.Controllers
             return View(chef);
         }
 
-        // GET: Chef/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Chef/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create([Bind("ChefId, FirstName, LastName, Description, Specialties, Price")] Chef chef)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
+                _context.Add(chef);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(chef);
         }
 
         // GET: Chef/Edit/5
@@ -89,19 +82,23 @@ namespace EffortlessKitchen.Controllers
         }
 
         // GET: Chef/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var chef = await _context.Chef.FirstOrDefaultAsync(c => c.ChefId == id);
+
+            return View(chef);
         }
 
         // POST: Chef/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, Chef chef)
         {
             try
             {
-                // TODO: Add delete logic here
+                chef.ChefId = id;
+                _context.Chef.Remove(chef);
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
