@@ -51,7 +51,7 @@
                         @if (UserManager.GetUserAsync(User).Result.Admmin == true)
                         {
                         <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ChefId }) |
                         @Html.ActionLink("See More", "Details", new { id = item.ChefId }) |
                         @Html.ActionLink("Delete", "Delete", new { id = item.ChefId })
                         </td>

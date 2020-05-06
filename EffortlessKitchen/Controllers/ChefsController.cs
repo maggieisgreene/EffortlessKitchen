@@ -59,20 +59,34 @@ namespace EffortlessKitchen.Controllers
         }
 
         // GET: Chef/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var chef = await _context.Chef
+                .Where(c => c.ChefId == id)
+                .FirstOrDefaultAsync();
+
+            return View(chef);
         }
 
         // POST: Chef/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, Chef chef)
         {
             try
             {
-                // TODO: Add update logic here
+                var uchef = new Chef()
+                {
+                    ChefId = id,
+                    FirstName = chef.FirstName,
+                    LastName = chef.LastName,
+                    Description = chef.Description,
+                    Specialties = chef.Specialties,
+                    Price = chef.Price
+                };
 
+                _context.Chef.Update(uchef);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch
