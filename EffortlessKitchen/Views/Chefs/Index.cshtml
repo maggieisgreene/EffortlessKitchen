@@ -1,0 +1,63 @@
+﻿@model IEnumerable<EffortlessKitchen.Models.Chef>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (UserManager.GetUserAsync(User).Result.Admmin == true)
+        {
+            <a asp-action="Create">Create New</a>
+        }
+    }
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        @if (UserManager.GetUserAsync(User).Result.Admmin == true)
+                        {
+                        <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ChefId }) |
+                        @Html.ActionLink("See More", "Details", new { id = item.ChefId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ChefId })
+                        </td>
+                        }
+                    }
+            </tr>
+        }
+    </tbody>
+</table>

@@ -61,6 +61,7 @@ namespace EffortlessKitchen.Areas.Identity.Pages.Account
             [Required]
             public bool Admmin { get; set; }
 
+            [Display(Name = "Admin Key")]
             [DataType(DataType.Password)]
             public string AdminKey { get; set; }
 
