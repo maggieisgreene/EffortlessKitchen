@@ -13,13 +13,13 @@ using Microsoft.EntityFrameworkCore;
 namespace EffortlessKitchen.Controllers
 {
     [Authorize]
-    public class ChefsController : Controller
+    public class MenuOptionsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ChefsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public MenuOptionsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
 
             _context = context;
@@ -28,18 +28,16 @@ namespace EffortlessKitchen.Controllers
 
         public async Task<ActionResult> Index()
         {
-            return View(await _context.Chef.ToListAsync());
+            return View(await _context.MenuOption.ToListAsync());
         }
 
         public async Task<ActionResult> Details(int id)
         {
-            var chef = await _context.Chef
-                .Where(c => c.ChefId == id)
-                .Include(c => c.ChefMenus)
-                    .ThenInclude(cm => cm.MenuOption)
+            var option = await _context.MenuOption
+                .Where(mo => mo.MenuOptionId == id)
                 .FirstOrDefaultAsync();
 
-            return View(chef);
+            return View(option);
         }
 
         public ActionResult Create()
@@ -49,43 +47,42 @@ namespace EffortlessKitchen.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("ChefId, FirstName, LastName, Description, Specialties, Price")] Chef chef)
+        public async Task<ActionResult> Create([Bind("MenuOptionId, Name, Description, Ingredients, Price")] MenuOption option)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(chef);
+                _context.Add(option);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(chef);
+            return View(option);
         }
 
         public async Task<ActionResult> Edit(int id)
         {
-            var chef = await _context.Chef
-                .Where(c => c.ChefId == id)
+            var option = await _context.MenuOption
+                .Where(mo => mo.MenuOptionId == id)
                 .FirstOrDefaultAsync();
 
-            return View(chef);
+            return View(option);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, Chef chef)
+        public async Task<ActionResult> Edit(int id, MenuOption option)
         {
             try
             {
-                var uchef = new Chef()
+                var uoption = new MenuOption()
                 {
-                    ChefId = id,
-                    FirstName = chef.FirstName,
-                    LastName = chef.LastName,
-                    Description = chef.Description,
-                    Specialties = chef.Specialties,
-                    Price = chef.Price
+                    MenuOptionId = id,
+                    Name = option.Name,
+                    Description = option.Description,
+                    Ingredients = option.Ingredients,
+                    Price = option.Price
                 };
 
-                _context.Chef.Update(uchef);
+                _context.MenuOption.Update(uoption);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -97,19 +94,19 @@ namespace EffortlessKitchen.Controllers
 
         public async Task<ActionResult> Delete(int id)
         {
-            var chef = await _context.Chef.FirstOrDefaultAsync(c => c.ChefId == id);
+            var option = await _context.MenuOption.FirstOrDefaultAsync(mo => mo.MenuOptionId == id);
 
-            return View(chef);
+            return View(option);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id, Chef chef)
+        public async Task<ActionResult> Delete(int id, MenuOption option)
         {
             try
             {
-                chef.ChefId = id;
-                _context.Chef.Remove(chef);
+                option.MenuOptionId = id;
+                _context.MenuOption.Remove(option);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
