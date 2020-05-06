@@ -1,0 +1,20 @@
+﻿@model IEnumerable<EffortlessKitchen.Models.Chef>
+
+@{
+    ViewData["Title"] = "ChooseChef";
+}
+
+<h1>Select Your Chef</h1>
+
+<div class="btn-group btn-group-toggle" data-toggle="buttons">
+    @foreach (var item in Model)
+    {
+        <label class="btn btn-light">
+            <input type="radio" name="options" id="@item.ChefId">
+            @Html.DisplayFor(modelItem => item.FirstName)
+            @Html.DisplayFor(modelItem => item.LastName)
+        </label>
+    }
+</div>
+
+<button class="btn btn-light">Next</button>
