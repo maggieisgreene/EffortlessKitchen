@@ -35,6 +35,8 @@ namespace EffortlessKitchen.Controllers
         {
             var chef = await _context.Chef
                 .Where(c => c.ChefId == id)
+                .Include(c => c.ChefMenus)
+                    .ThenInclude(cm => cm.MenuOption)
                 .FirstOrDefaultAsync();
 
             return View(chef);
