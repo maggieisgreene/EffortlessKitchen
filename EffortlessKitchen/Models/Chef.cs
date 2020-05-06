@@ -26,6 +26,7 @@ namespace EffortlessKitchen.Models
         public string Specialties { get; set; }
 
         [Required]
+        [DataType(DataType.Currency)]
         public double Price { get; set; }
 
         public virtual List<ChefMenu> ChefMenus { get; set; }
