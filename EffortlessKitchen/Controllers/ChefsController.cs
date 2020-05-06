@@ -58,7 +58,6 @@ namespace EffortlessKitchen.Controllers
             return View(chef);
         }
 
-        // GET: Chef/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
             var chef = await _context.Chef
@@ -68,7 +67,6 @@ namespace EffortlessKitchen.Controllers
             return View(chef);
         }
 
-        // POST: Chef/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, Chef chef)
@@ -95,7 +93,6 @@ namespace EffortlessKitchen.Controllers
             }
         }
 
-        // GET: Chef/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
             var chef = await _context.Chef.FirstOrDefaultAsync(c => c.ChefId == id);
@@ -103,7 +100,6 @@ namespace EffortlessKitchen.Controllers
             return View(chef);
         }
 
-        // POST: Chef/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(int id, Chef chef)
@@ -121,7 +117,5 @@ namespace EffortlessKitchen.Controllers
                 return View();
             }
         }
-
-        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
     }
 }

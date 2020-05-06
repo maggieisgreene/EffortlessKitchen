@@ -47,12 +47,43 @@ namespace EffortlessKitchen.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("MenuOptionId, Name, Description, Ingredients, Price")] IFormCollection collection)
+        public async Task<ActionResult> Create([Bind("MenuOptionId, Name, Description, Ingredients, Price")] MenuOption option)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(option);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(option);
+        }
+
+        public async Task<ActionResult> Edit(int id)
+        {
+            var option = await _context.MenuOption
+                .Where(mo => mo.MenuOptionId == id)
+                .FirstOrDefaultAsync();
+
+            return View(option);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(int id, MenuOption option)
         {
             try
             {
-                // TODO: Add insert logic here
+                var uoption = new MenuOption()
+                {
+                    MenuOptionId = id,
+                    Name = option.Name,
+                    Description = option.Description,
+                    Ingredients = option.Ingredients,
+                    Price = option.Price
+                };
 
+                _context.MenuOption.Update(uoption);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -61,43 +92,22 @@ namespace EffortlessKitchen.Controllers
             }
         }
 
-        // GET: MenuOptions/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var option = await _context.MenuOption.FirstOrDefaultAsync(mo => mo.MenuOptionId == id);
+
+            return View(option);
         }
 
-        // POST: MenuOptions/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, MenuOption option)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: MenuOptions/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: MenuOptions/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+                option.MenuOptionId = id;
+                _context.MenuOption.Remove(option);
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
