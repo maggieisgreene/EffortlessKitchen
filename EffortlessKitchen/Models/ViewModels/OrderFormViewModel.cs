@@ -18,6 +18,7 @@ namespace EffortlessKitchen.Models.ViewModels
 
         [Required]
         [Display(Name = "Guest Count")]
+        [Range(1, 20)]
         public int GuestCount { get; set; }
 
         [Required]

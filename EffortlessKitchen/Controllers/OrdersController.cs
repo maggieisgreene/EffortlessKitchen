@@ -74,26 +74,32 @@ namespace EffortlessKitchen.Controllers
         // POST: Orders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("DateTime, GuestCount, DateCreated, ApplicationUserId, ChefMenuId")] OrderFormViewModel vm)
+        public async Task<ActionResult> Create([FromRoute] int id,[Bind("DateTime, GuestCount, DateCreated, ApplicationUserId, ChefMenuId")] OrderFormViewModel vm)
         {
             try
             {
                 var user = await GetCurrentUserAsync();
+                var existingOrders = await _context.Order
+                    .Where(o => o.ChefMenu.ChefId == id && o.DateTime == vm.DateTime)
+                    .ToListAsync();
 
-                var order = new Order()
+                if (existingOrders.Count == 0)
                 {
-                    DateTime = vm.DateTime,
-                    GuestCount = vm.GuestCount,
-                    DateCreated = DateTime.Now,
-                    ApplicationUserId = user.Id,
-                    ChefMenuId = vm.ChefMenuId
-                };
-
+                    var order = new Order()
+                    {
+                        DateTime = vm.DateTime,
+                        GuestCount = vm.GuestCount,
+                        DateCreated = DateTime.Now,
+                        ApplicationUserId = user.Id,
+                        ChefMenuId = vm.ChefMenuId
+                    };
 
                 _context.Order.Add(order);
                 await _context.SaveChangesAsync();
+                }
 
-                return RedirectToAction(nameof(Index));
+                // This will need to redirect to a Confrimation or You Orders!
+                return RedirectToAction(nameof(ChooseChef));
             }
             catch
             {

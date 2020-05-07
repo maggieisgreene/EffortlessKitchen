@@ -4,18 +4,19 @@
     ViewData["Title"] = "ChooseChef";
 }
 
-<h1>ChooseChef</h1>
+<h2>First, you will need to select your chef!</h2>
+<br />
 
 <div class="btn-group btn-group-toggle">
     <form>
-    @foreach (var item in Model)
-    {
-        <label class="btn btn-light">
-            <a asp-controller="Orders" asp-action="Create" asp-route-id="@item.ChefId" class="text-decoration-none" name="options" id="@item.ChefId" value="@item.ChefId" checked>
-            @Html.DisplayFor(modelItem => item.FirstName)
-            @Html.DisplayFor(modelItem => item.LastName)
-            </a>
-        </label>
-    }
+        @foreach (var item in Model)
+        {
+            <label class="btn btn-light">
+                <a asp-controller="Orders" asp-action="Create" asp-route-id="@item.ChefId" class="text-decoration-none text-dark">
+                @Html.DisplayFor(modelItem => item.FirstName)
+                @Html.DisplayFor(modelItem => item.LastName)
+                </a>
+            </label>
+        }
     </form>
 </div>
