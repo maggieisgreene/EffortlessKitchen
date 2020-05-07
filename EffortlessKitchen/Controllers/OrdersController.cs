@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -56,19 +57,41 @@ namespace EffortlessKitchen.Controllers
         }
 
         // GET: Orders/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create([FromRoute] int id)
         {
-            return View();
+            var chefMenus = await _context.ChefMenu
+                .Where(cm => cm.ChefId == id)
+                .Select(cm => new SelectListItem() { Text = cm.MenuOption.Name, Value = cm.ChefMenuId.ToString() })
+                .ToListAsync();
+
+            var view = new OrderFormViewModel();
+
+            view.ChefMenus = chefMenus;
+
+            return View(view);
         }
 
         // POST: Orders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create([Bind("DateTime, GuestCount, DateCreated, ApplicationUserId, ChefMenuId")] OrderFormViewModel vm)
         {
             try
             {
-                // TODO: Add insert logic here
+                var user = await GetCurrentUserAsync();
+
+                var order = new Order()
+                {
+                    DateTime = vm.DateTime,
+                    GuestCount = vm.GuestCount,
+                    DateCreated = DateTime.Now,
+                    ApplicationUserId = user.Id,
+                    ChefMenuId = vm.ChefMenuId
+                };
+
+
+                _context.Order.Add(order);
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -123,5 +146,7 @@ namespace EffortlessKitchen.Controllers
                 return View();
             }
         }
+
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
     }
 }
