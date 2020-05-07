@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using EffortlessKitchen.Data;
 using EffortlessKitchen.Models;
+using EffortlessKitchen.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace EffortlessKitchen.Controllers
 {
@@ -28,7 +30,23 @@ namespace EffortlessKitchen.Controllers
 
         public async Task<ActionResult> ChooseChef()
         {
-            return View(await _context.Chef.ToListAsync());
+            var chefs = await _context.Chef.ToListAsync();
+            var list = new List<ChooseChefViewModel>();
+
+            foreach (var item in chefs)
+            {
+                var chef = new ChooseChefViewModel()
+                {
+                    ChefId = item.ChefId,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    IsChecked = false
+                };
+
+                list.Add(chef);
+            }
+
+            return View(list);
         }
 
         // GET: Orders/Details/5

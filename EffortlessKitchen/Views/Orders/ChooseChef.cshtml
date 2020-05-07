@@ -1,20 +1,21 @@
-﻿@model IEnumerable<EffortlessKitchen.Models.Chef>
+﻿@model IEnumerable<EffortlessKitchen.Models.ViewModels.ChooseChefViewModel>
 
 @{
     ViewData["Title"] = "ChooseChef";
 }
 
-<h1>Select Your Chef</h1>
+<h1>ChooseChef</h1>
 
-<div class="btn-group btn-group-toggle" data-toggle="buttons">
+<div class="btn-group btn-group-toggle">
+    <form>
     @foreach (var item in Model)
     {
         <label class="btn btn-light">
-            <input type="radio" name="options" id="@item.ChefId">
+            <a asp-controller="Orders" asp-action="FinishOrder" asp-route-id="@item.ChefId" class="text-decoration-none" name="options" id="@item.ChefId" value="@item.ChefId" checked>
             @Html.DisplayFor(modelItem => item.FirstName)
             @Html.DisplayFor(modelItem => item.LastName)
+            </a>
         </label>
     }
+    </form>
 </div>
-
-<button class="btn btn-light">Next</button>
