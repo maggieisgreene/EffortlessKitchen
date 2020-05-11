@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using EffortlessKitchen.Data;
 using EffortlessKitchen.Models;
+using EffortlessKitchen.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace EffortlessKitchen.Controllers
@@ -42,36 +44,79 @@ namespace EffortlessKitchen.Controllers
             return View(chef);
         }
 
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            return View();
+            var vm = new ChefFormViewModel();
+
+            var menuOptions = await _context.MenuOption
+                .Select(mo => new SelectListItem()
+                {
+                    Text = mo.Name,
+                    Value = mo.MenuOptionId.ToString()
+                }).ToListAsync();
+
+            vm.MenuOptions = menuOptions;
+
+            return View(vm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("ChefId, FirstName, LastName, Description, Specialties, Price")] Chef chef)
+        public async Task<ActionResult> Create([Bind("ChefId, FirstName, LastName, Description, Specialties, Price, ChefMenus, SelectedMenuOptionIds")] ChefFormViewModel vm)
         {
-            if (ModelState.IsValid)
+            var chef = new Chef()
             {
-                _context.Add(chef);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                Description = vm.Description,
+                Specialties = vm.Specialties,
+                Price = vm.Price
+            };
+
+            if (vm.SelectedMenuOptionIds != null)
+            {
+                chef.ChefMenus = vm.SelectedMenuOptionIds.Select(menuId => new ChefMenu()
+                {
+                    ChefId = chef.ChefId,
+                    MenuOptionId = menuId
+                }).ToList();
             }
-            return View(chef);
+
+            _context.Chef.Add(chef);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<ActionResult> Edit(int id)
         {
-            var chef = await _context.Chef
-                .Where(c => c.ChefId == id)
-                .FirstOrDefaultAsync();
+            var vm = new ChefFormViewModel();
 
-            return View(chef);
+            var chef = await _context.Chef
+                .Include(c => c.ChefMenus)
+                .FirstOrDefaultAsync(c => c.ChefId == id);
+
+            var menuOptions = await _context.MenuOption
+                .Select(mo => new SelectListItem()
+                {
+                    Text = mo.Name,
+                    Value = mo.MenuOptionId.ToString()
+                })
+                .ToListAsync();
+
+            vm.FirstName = chef.FirstName;
+            vm.LastName = chef.LastName;
+            vm.Description = chef.Description;
+            vm.Specialties = chef.Specialties;
+            vm.Price = chef.Price;
+            vm.MenuOptions = menuOptions;
+            vm.SelectedMenuOptionIds = chef.ChefMenus.Select(cm => cm.MenuOptionId).ToList();
+
+            return View(vm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, Chef chef)
+        public async Task<ActionResult> Edit(int id, ChefFormViewModel chef)
         {
             try
             {
@@ -84,6 +129,12 @@ namespace EffortlessKitchen.Controllers
                     Specialties = chef.Specialties,
                     Price = chef.Price
                 };
+
+                uchef.ChefMenus = chef.SelectedMenuOptionIds.Select(menuId => new ChefMenu()
+                {
+                    ChefId = chef.ChefId,
+                    MenuOptionId = menuId
+                }).ToList();
 
                 _context.Chef.Update(uchef);
                 await _context.SaveChangesAsync();

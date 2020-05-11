@@ -63,6 +63,15 @@
                     </td>
                 }
             }
+            @if (SignInManager.IsSignedIn(User))
+            {
+                @if (UserManager.GetUserAsync(User).Result.Admmin == false)
+                {
+                    <td>
+                        @Html.ActionLink("See More", "Details", new { id = item.MenuOptionId })
+                    </td>
+                }
+            }
         </tr>
         }
     </tbody>

@@ -35,10 +35,17 @@
                 {
                     @if (UserManager.GetUserAsync(User).Result.Admmin == true)
                     {
-                        @*<a type="button" asp-controller="Chefs" asp-action=""></a>*@
-                       @Html.ActionLink("Edit   ", "Edit", new { id = item.ChefId }) 
-                       @Html.ActionLink("See More   ", "Details", new { id = item.ChefId }) 
-                       @Html.ActionLink("Delete", "Delete", new { id = item.ChefId })
+                        @Html.ActionLink("Edit   ", "Edit", new { id = item.ChefId })
+                        @Html.ActionLink("See More   ", "Details", new { id = item.ChefId })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ChefId })
+                    }
+
+                }
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    @if (UserManager.GetUserAsync(User).Result.Admmin == false)
+                    {
+                        @Html.ActionLink("See More", "Details", new { id = item.ChefId })
                     }
                 }
             </div>
