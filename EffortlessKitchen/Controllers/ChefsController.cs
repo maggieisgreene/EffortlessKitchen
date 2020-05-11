@@ -44,22 +44,47 @@ namespace EffortlessKitchen.Controllers
             return View(chef);
         }
 
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            return View();
+            var vm = new ChefFormViewModel();
+
+            var menuOptions = await _context.MenuOption
+                .Select(mo => new SelectListItem()
+                {
+                    Text = mo.Name,
+                    Value = mo.MenuOptionId.ToString()
+                }).ToListAsync();
+
+            vm.MenuOptions = menuOptions;
+
+            return View(vm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("ChefId, FirstName, LastName, Description, Specialties, Price")] Chef chef)
+        public async Task<ActionResult> Create([Bind("ChefId, FirstName, LastName, Description, Specialties, Price, ChefMenus, SelectedMenuOptionIds")] ChefFormViewModel vm)
         {
-            if (ModelState.IsValid)
+            var chef = new Chef()
             {
-                _context.Add(chef);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                Description = vm.Description,
+                Specialties = vm.Specialties,
+                Price = vm.Price
+            };
+
+            if (vm.SelectedMenuOptionIds != null)
+            {
+                chef.ChefMenus = vm.SelectedMenuOptionIds.Select(menuId => new ChefMenu()
+                {
+                    ChefId = chef.ChefId,
+                    MenuOptionId = menuId
+                }).ToList();
             }
-            return View(chef);
+
+            _context.Chef.Add(chef);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<ActionResult> Edit(int id)
