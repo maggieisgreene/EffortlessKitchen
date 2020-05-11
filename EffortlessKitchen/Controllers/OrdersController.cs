@@ -98,13 +98,25 @@ namespace EffortlessKitchen.Controllers
                 await _context.SaveChangesAsync();
                 }
 
-                // This will need to redirect to a Confrimation or You Orders!
-                return RedirectToAction(nameof(ChooseChef));
+                return RedirectToAction(nameof(OrderHistory));
             }
             catch
             {
                 return View();
             }
+        }
+
+        public async Task<ActionResult> OrderHistory()
+        {
+            var user = await GetCurrentUserAsync();
+            var orders = await _context.Order
+                .Where(o => o.ApplicationUserId == user.Id)
+                .Include(o => o.ChefMenu.Chef)
+                .Include(o => o.ChefMenu.MenuOption)
+                .OrderByDescending(o => o.DateTime)
+                .ToListAsync();
+
+            return View(orders);
         }
 
         // GET: Orders/Edit/5
