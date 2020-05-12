@@ -12,6 +12,7 @@ namespace EffortlessKitchen.Models
         public int OrderId { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:dddd, MMMM dd, yyyy}")]
         public DateTime DateTime { get; set; }
 
         [Required]
