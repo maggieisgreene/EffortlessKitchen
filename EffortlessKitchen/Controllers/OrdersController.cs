@@ -83,7 +83,23 @@ namespace EffortlessKitchen.Controllers
                     .Where(o => o.ChefMenu.ChefId == id && o.DateTime == vm.DateTime)
                     .ToListAsync();
 
-                if (existingOrders.Count == 0)
+
+                if (existingOrders.Count != 0)
+                {
+                    var chefMenus = await _context.ChefMenu
+                        .Where(cm => cm.ChefId == id)
+                        .Select(cm => new SelectListItem() { Text = cm.MenuOption.Name, Value = cm.ChefMenuId.ToString() })
+                        .ToListAsync();
+
+                    var view = new OrderFormViewModel();
+
+                    view.ChefMenus = chefMenus;
+
+                    ModelState.AddModelError(string.Empty, "That time is already taken! Please select another time.");
+
+                    return View(view);
+                }
+                else
                 {
                     var order = new Order()
                     {
@@ -96,9 +112,9 @@ namespace EffortlessKitchen.Controllers
 
                 _context.Order.Add(order);
                 await _context.SaveChangesAsync();
-                }
 
                 return RedirectToAction(nameof(OrderHistory));
+                }
             }
             catch
             {
