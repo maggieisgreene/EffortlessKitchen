@@ -18,61 +18,39 @@
         }
     }
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ingredients)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ingredients)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            @if (SignInManager.IsSignedIn(User))
-            {
-                @if (UserManager.GetUserAsync(User).Result.Admmin == true)
+
+<div class="d-flex flex-wrap">
+    @foreach (var item in Model)
+    {
+        <div class="card m-2" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                    @Html.DisplayFor(modelItem => item.Price)
+                </h6>
+                <p class="card-text">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </p>
+                @if (SignInManager.IsSignedIn(User))
                 {
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.MenuOptionId }) |
-                        @Html.ActionLink("See More", "Details", new { id = item.MenuOptionId }) |
+                    @if (UserManager.GetUserAsync(User).Result.Admmin == true)
+                    {
+                        @Html.ActionLink("Edit   ", "Edit", new { id = item.MenuOptionId })
+                        @Html.ActionLink("See More   ", "Details", new { id = item.MenuOptionId })
                         @Html.ActionLink("Delete", "Delete", new { id = item.MenuOptionId })
-                    </td>
+                    }
+
                 }
-            }
-            @if (SignInManager.IsSignedIn(User))
-            {
-                @if (UserManager.GetUserAsync(User).Result.Admmin == false)
+                @if (SignInManager.IsSignedIn(User))
                 {
-                    <td>
+                    @if (UserManager.GetUserAsync(User).Result.Admmin == false)
+                    {
                         @Html.ActionLink("See More", "Details", new { id = item.MenuOptionId })
-                    </td>
+                    }
                 }
-            }
-        </tr>
-        }
-    </tbody>
-</table>
+            </div>
+        </div>
+    }
+</div>
