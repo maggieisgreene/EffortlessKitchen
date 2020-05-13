@@ -21,7 +21,6 @@ namespace EffortlessKitchen.Models.ViewModels
         [Range(1, 20)]
         public int GuestCount { get; set; }
 
-        [Required]
         public string ApplicationUserId { get; set; }
 
         [Required]
