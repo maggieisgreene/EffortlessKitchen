@@ -26,18 +26,19 @@
                     @Html.DisplayFor(modelItem => item.FirstName)
                     @Html.DisplayFor(modelItem => item.LastName)
                 </h5>
-            <div class="card-body">
-                <p class="card-text">
-                    @Html.DisplayFor(modelItem => item.Description)
-                </p>
-                <div class="card-body text-white">
+                <div class="card-body">
+                    <p class="card-text">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </p>
+                </div>
+                <div class="card-body">
                     @if (SignInManager.IsSignedIn(User))
                     {
                         @if (UserManager.GetUserAsync(User).Result.Admmin == true)
                         {
-                            <a class="card-link text-primary" asp-action="Edit" asp-route-id="@item.ChefId">Edit</a>
-                            <a class="card-link text-primary" asp-action="Details" asp-route-id="@item.ChefId">Details</a>
-                            <a class="card-link text-primary" asp-action="Delete" asp-route-id="@item.ChefId">Delete</a>
+                            <a type="button" class="btn btn-primary card-link text-light" asp-action="Edit" asp-route-id="@item.ChefId">Edit</a>
+                            <a type="button" class="btn btn-primary card-link text-light" asp-action="Details" asp-route-id="@item.ChefId">Details</a>
+                            <a type="button" class="btn btn-light card-link text-primary" asp-action="Delete" asp-route-id="@item.ChefId">Delete</a>
                         }
 
                     }
@@ -45,11 +46,10 @@
                     {
                         @if (UserManager.GetUserAsync(User).Result.Admmin == false)
                         {
-                            <a class="card-link text-primary" asp-action="Details" asp-route-id="@item.ChefId">Details</a>
+                            <a type="button" class="btn btn-light card-link text-primary" asp-action="Details" asp-route-id="@item.ChefId">Details</a>
                         }
                     }
                 </div>
-            </div>
         </div>
     }
 </div>
