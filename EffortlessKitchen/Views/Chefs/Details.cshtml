@@ -60,9 +60,9 @@
 <div>
     @if (SignInManager.IsSignedIn(User))
     {
-        @if (UserManager.GetUserAsync(User).Result.Admmin == false)
+        @if (UserManager.GetUserAsync(User).Result.Admmin == true)
         {
-            <a class="card-link btn btn-primary" asp-action="Edit" asp-route-id="@Model.ChefId">Details</a>
+            <a class="card-link btn btn-primary" asp-action="Edit" asp-route-id="@Model.ChefId">Edit</a>
         }
     }
     <a asp-action="Index" class="card-link">Back to List</a>

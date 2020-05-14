@@ -12,10 +12,12 @@ namespace EffortlessKitchen.Models
         public int OrderId { get; set; }
 
         [Required]
-        [DisplayFormat(DataFormatString = "{0:dddd, MMMM dd, yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dddd, MMMM dd, yyyy h:mm tt}")]
+        [Display(Name = "Date")]
         public DateTime DateTime { get; set; }
 
         [Required]
+        [Display(Name = "Guest Count")]
         public int GuestCount { get; set; }
 
         [Required]
@@ -33,5 +35,13 @@ namespace EffortlessKitchen.Models
         public int ChefMenuId { get; set; }
         [Required]
         public ChefMenu ChefMenu { get; set; }
+
+        public double TotalPrice
+        {
+            get
+            {
+                return ChefMenu.Chef.Price + ChefMenu.MenuOption.Price;
+            }
+        }
     }
 }

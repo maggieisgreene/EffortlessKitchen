@@ -4,7 +4,11 @@
     ViewData["Title"] = "OrderHistory";
 }
 
-<h1>Order History</h1>
+<div class="d-flex flex-wrap justify-content-between header-stuff">
+    <h3><strong>All Reservations</strong></h3>
+</div>
+
+<h4>Here you can see all past and upcoming reservations!</h4>
 
 <table class="table">
     <thead>
@@ -19,28 +23,58 @@
                 Chef
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ChefMenu.MenuOption.Name)
+                Menu
             </th>
-            <th></th>
+            <th>
+                Total Price
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GuestCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChefMenu.Chef.FirstName)
-                @Html.DisplayFor(modelItem => item.ChefMenu.Chef.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChefMenu.MenuOption.Name)
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            @if (item.DateTime < DateTime.Now)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GuestCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ChefMenu.Chef.FirstName)
+                        @Html.DisplayFor(modelItem => item.ChefMenu.Chef.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ChefMenu.MenuOption.Name)
+                    </td>
+                    <td>
+                        @String.Format("{0:c}", item.TotalPrice)
+                    </td>
+                </tr>
+            }
+            @if (item.DateTime > DateTime.Now)
+            {
+                <tr class="text-success">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GuestCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ChefMenu.Chef.FirstName)
+                        @Html.DisplayFor(modelItem => item.ChefMenu.Chef.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ChefMenu.MenuOption.Name)
+                    </td>
+                    <td>
+                        @String.Format("{0:c}", item.TotalPrice)
+                    </td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
