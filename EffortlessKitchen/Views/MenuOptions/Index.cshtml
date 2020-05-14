@@ -8,12 +8,12 @@
 }
 
 <div class="d-flex flex-wrap justify-content-between header-stuff">
-    <h3>The Menu</h3>
+    <h3><strong>The Menu</strong></h3>
     @if (SignInManager.IsSignedIn(User))
     {
         @if (UserManager.GetUserAsync(User).Result.Admmin == true)
         {
-            <a type="button" class="btn btn-light btn-lg pt-2" asp-action="Create">Create New</a>
+            <a type="button" class="btn btn-primary btn-lg pt-2" asp-action="Create">Create New</a>
         }
     }
 </div>
@@ -32,13 +32,15 @@
                 <p class="card-text">
                     @Html.DisplayFor(modelItem => item.Description)
                 </p>
+            </div>
+            <div class="card-body d-flex justify-content-around">
                 @if (SignInManager.IsSignedIn(User))
                 {
                     @if (UserManager.GetUserAsync(User).Result.Admmin == true)
                     {
-                        @Html.ActionLink("Edit   ", "Edit", new { id = item.MenuOptionId })
-                        @Html.ActionLink("See More   ", "Details", new { id = item.MenuOptionId })
-                        @Html.ActionLink("Delete", "Delete", new { id = item.MenuOptionId })
+                        <a class="card-link" asp-action="Edit" asp-route-id="@item.MenuOptionId">Edit</a>
+                        <a class="card-link" asp-action="Details" asp-route-id="@item.MenuOptionId">Details</a>
+                        <a class="card-link" asp-action="Delete" asp-route-id="@item.MenuOptionId">Delete</a>
                     }
 
                 }
@@ -46,7 +48,7 @@
                 {
                     @if (UserManager.GetUserAsync(User).Result.Admmin == false)
                     {
-                        @Html.ActionLink("See More", "Details", new { id = item.MenuOptionId })
+                        <a class="card-link" asp-action="Details" asp-route-id="@item.MenuOptionId">Details</a>
                     }
                 }
             </div>

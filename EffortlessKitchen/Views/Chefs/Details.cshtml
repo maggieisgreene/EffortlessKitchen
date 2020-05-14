@@ -1,13 +1,17 @@
 ﻿@model EffortlessKitchen.Models.Chef
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="d-flex flex-wrap justify-content-between header-stuff">
+    <h3><strong>Details</strong></h3>
+</div>
 
 <div>
-    <h4>Chef</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -43,17 +47,23 @@
         <dt class="col-sm-10">
             Menu
         </dt>
-        <ul>
+        <br />
         @foreach (var item in Model.ChefMenus)
         {
-            <li class="col-sm-10">
+            <dd class="col-sm-10">
                 @Html.DisplayFor(modelItem => item.MenuOption.Name)
-            </li>
+            </dd>
         }
-        </ul>
+
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (UserManager.GetUserAsync(User).Result.Admmin == false)
+        {
+            <a class="card-link btn btn-primary" asp-action="Edit" asp-route-id="@Model.ChefId">Details</a>
+        }
+    }
+    <a asp-action="Index" class="card-link">Back to List</a>
 </div>

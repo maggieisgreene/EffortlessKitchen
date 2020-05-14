@@ -32,6 +32,7 @@ namespace EffortlessKitchen.Models.ViewModels
         public virtual List<ChefMenu> ChefMenus { get; set; }
 
         public List<SelectListItem> MenuOptions { get; set; }
+        [Display(Name = "Menu")]
         public List<int> SelectedMenuOptionIds { get; set; }
     }
 }

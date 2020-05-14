@@ -8,12 +8,12 @@
 }
 
 <div class="d-flex flex-wrap justify-content-between header-stuff">
-    <h3>The Chefs</h3>
+    <h3><strong>The Chefs</strong></h3>
     @if (SignInManager.IsSignedIn(User))
     {
         @if (UserManager.GetUserAsync(User).Result.Admmin == true)
         {
-            <a type="button" class="btn btn-light btn-lg pt-2" asp-action="Create">Create New</a>
+            <a type="button" class="btn btn-primary btn-lg pt-2" asp-action="Create">Create New</a>
         }
     }
 </div>
@@ -21,24 +21,24 @@
 <div class="d-flex flex-wrap">
     @foreach(var item in Model)
     {
-        <div class="card bg-success text-light m-3" style="width: 18rem;">
-                <h5 class="card-header">
+        <div class="card border-light m-3 disabled" style="width: 18rem;">
+                <div class="card-body">
+                <h5 class="card-title">
                     @Html.DisplayFor(modelItem => item.FirstName)
                     @Html.DisplayFor(modelItem => item.LastName)
                 </h5>
-                <div class="card-body">
                     <p class="card-text">
                         @Html.DisplayFor(modelItem => item.Description)
                     </p>
                 </div>
-                <div class="card-body">
+                <div class="card-body d-flex justify-content-around">
                     @if (SignInManager.IsSignedIn(User))
                     {
                         @if (UserManager.GetUserAsync(User).Result.Admmin == true)
                         {
-                            <a type="button" class="btn btn-primary card-link text-light" asp-action="Edit" asp-route-id="@item.ChefId">Edit</a>
-                            <a type="button" class="btn btn-primary card-link text-light" asp-action="Details" asp-route-id="@item.ChefId">Details</a>
-                            <a type="button" class="btn btn-light card-link text-primary" asp-action="Delete" asp-route-id="@item.ChefId">Delete</a>
+                            <a class="card-link" asp-action="Edit" asp-route-id="@item.ChefId">Edit</a>
+                            <a class="card-link" asp-action="Details" asp-route-id="@item.ChefId">Details</a>
+                            <a class="card-link" asp-action="Delete" asp-route-id="@item.ChefId">Delete</a>
                         }
 
                     }
@@ -46,7 +46,7 @@
                     {
                         @if (UserManager.GetUserAsync(User).Result.Admmin == false)
                         {
-                            <a type="button" class="btn btn-light card-link text-primary" asp-action="Details" asp-route-id="@item.ChefId">Details</a>
+                            <a class="card-link" asp-action="Details" asp-route-id="@item.ChefId">Details</a>
                         }
                     }
                 </div>
