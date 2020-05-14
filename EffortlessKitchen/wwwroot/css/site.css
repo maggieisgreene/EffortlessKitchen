@@ -7,11 +7,6 @@ a.navbar-brand {
   word-break: break-all;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-    color: #343a40;
-}
-
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
@@ -69,4 +64,8 @@ body {
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
+}
+
+.header-stuff {
+    margin: 16px 31px 0px 31px;
 }

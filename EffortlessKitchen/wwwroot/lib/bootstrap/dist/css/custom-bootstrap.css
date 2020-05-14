@@ -20,7 +20,7 @@
     --info: #3498DB;
     --warning: #F39C12;
     --danger: #E74C3C;
-    --light: #ecf0f1;
+    --light: #f8f9fa;
     --dark: #7b8a8b;
     --breakpoint-xs: 0;
     --breakpoint-sm: 576px;
@@ -54,7 +54,7 @@ body {
     font-size: 0.9375rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #212529;
+    color: #2c3e50;
     text-align: left;
     background-color: whitesmoke;
 }

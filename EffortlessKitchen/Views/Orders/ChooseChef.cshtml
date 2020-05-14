@@ -4,24 +4,24 @@
     ViewData["Title"] = "ChooseChef";
 }
 
-<div class="d-flex flex-wrap">
-    <h2 class="col-6">First, you will need to select your chef!</h2>
-    <p class="col-6">
-        <a type="button" class="btn btn-light" asp-action="OrderHistory">Order History</a>
-    </p>
-    </div>
-<br />
+<div class="d-flex flex-wrap justify-content-between header-stuff">
+    <h3>Reservations</h3>
+    <a type="button" class="btn btn-light btn-lg pt-2" asp-action="OrderHistory">Order History</a>
+</div>
+<br/>
+<div class="d-block text-center">
+    <h4>To create a new reservation, choose a chef below!</h4>
+</div>
+<br/>
 
-<div class="btn-group btn-group-toggle">
+<div class="btn-group btn-group-toggle d-flex flex-wrap justify-content-around">
     <form>
         @foreach (var item in Model)
         {
-            <label class="btn btn-light">
-                <a asp-controller="Orders" asp-action="Create" asp-route-id="@item.ChefId" class="text-decoration-none text-dark">
-                @Html.DisplayFor(modelItem => item.FirstName)
-                @Html.DisplayFor(modelItem => item.LastName)
-                </a>
-            </label>
+            <a type="button" asp-controller="Orders" asp-action="Create" asp-route-id="@item.ChefId" class="btn btn-success btn-lg mx-2 text-decoration-none text-light">
+            @Html.DisplayFor(modelItem => item.FirstName)
+            @Html.DisplayFor(modelItem => item.LastName)
+            </a>
         }
     </form>
 </div>

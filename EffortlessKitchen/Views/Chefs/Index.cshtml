@@ -7,22 +7,21 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>The Chefs</h1>
-
-<p>
+<div class="d-flex flex-wrap justify-content-between header-stuff">
+    <h3>The Chefs</h3>
     @if (SignInManager.IsSignedIn(User))
     {
         @if (UserManager.GetUserAsync(User).Result.Admmin == true)
         {
-            <a asp-action="Create">Create New</a>
+            <a type="button" class="btn btn-light btn-lg pt-2" asp-action="Create">Create New</a>
         }
     }
-</p>
+</div>
 
 <div class="d-flex flex-wrap">
     @foreach(var item in Model)
     {
-        <div class="card bg-danger text-white m-3" style="width: 18rem;">
+        <div class="card bg-success text-light m-3" style="width: 18rem;">
                 <h5 class="card-header">
                     @Html.DisplayFor(modelItem => item.FirstName)
                     @Html.DisplayFor(modelItem => item.LastName)
@@ -31,23 +30,25 @@
                 <p class="card-text">
                     @Html.DisplayFor(modelItem => item.Description)
                 </p>
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    @if (UserManager.GetUserAsync(User).Result.Admmin == true)
+                <div class="card-body text-white">
+                    @if (SignInManager.IsSignedIn(User))
                     {
-                        @Html.ActionLink("Edit   ", "Edit", new { id = item.ChefId })
-                        @Html.ActionLink("See More   ", "Details", new { id = item.ChefId })
-                        @Html.ActionLink("Delete", "Delete", new { id = item.ChefId })
-                    }
+                        @if (UserManager.GetUserAsync(User).Result.Admmin == true)
+                        {
+                            <a class="card-link text-primary" asp-action="Edit" asp-route-id="@item.ChefId">Edit</a>
+                            <a class="card-link text-primary" asp-action="Details" asp-route-id="@item.ChefId">Details</a>
+                            <a class="card-link text-primary" asp-action="Delete" asp-route-id="@item.ChefId">Delete</a>
+                        }
 
-                }
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    @if (UserManager.GetUserAsync(User).Result.Admmin == false)
-                    {
-                        @Html.ActionLink("See More", "Details", new { id = item.ChefId })
                     }
-                }
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        @if (UserManager.GetUserAsync(User).Result.Admmin == false)
+                        {
+                            <a class="card-link text-primary" asp-action="Details" asp-route-id="@item.ChefId">Details</a>
+                        }
+                    }
+                </div>
             </div>
         </div>
     }

@@ -7,17 +7,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
+<div class="d-flex flex-wrap justify-content-between header-stuff">
+    <h3>The Menu</h3>
     @if (SignInManager.IsSignedIn(User))
     {
         @if (UserManager.GetUserAsync(User).Result.Admmin == true)
         {
-            <a asp-action="Create">Create New</a>
+            <a type="button" class="btn btn-light btn-lg pt-2" asp-action="Create">Create New</a>
         }
     }
-</p>
+</div>
 
 <div class="d-flex flex-wrap">
     @foreach (var item in Model)
